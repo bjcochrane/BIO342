@@ -1,2 +1,2 @@
 # BIO342
-Text material to be used in a course in General Genetics
+This repo is for the development of text material for a course in General Genetics.  Original material was created in RMarkdown. HTML files generated are  found in the html subdirectory.

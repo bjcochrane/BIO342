@@ -11,7 +11,7 @@ output:
 ---
 
 
-```{r,echo=FALSE,results='hide',message=FALSE}
+```{r,echo=FALSE,results='hide',message=FALSE,warning=FALSE}
 #install.packages("knitcitations")
 library(knitcitations)
 library(GenABEL)
@@ -66,7 +66,34 @@ For what should be obvious reasons, the real raw GWAS data are not publicly avai
 
 ### Case 1.  A low frequency allele in Asia
 
-Our first case will involve a dominant disease-associated allele, one that increases the risk of the disease by a factor of 20.
+```{r,echo=FALSE}
+snp.nm <-"rs7540216"
+snp.pos <-183441639
+a0 <-"C"
+a1 <-"T"
+```
+
+Our first case will involve a dominant disease-associated allele, one that increases the risk of the disease by a factor of 20.  The causative snp happens to be the one designated `r snp.nm`, at position `r snp.pos`.  This is a `r paste(a0,a1,sep="/")`, with the frequency of the `r a1` allele in this population equal to .08.  Hapgen2 has been used to generate a population of 1000 controls and 1000 cases; we are going to use those simulated data to do an association scan over the region in question.
+
+So think of the simulated data as what would be available to an investigator who is actually looking for the disease-associated locus.  If all she knew nothing about the chromosomal location of the genome, then she would obviously have to search every chromosome for association.  However, to keep things more manageable, we're going to assume that, based on some prior information (perhaps a preliminary study involving a low-density SNP map), she has decided to focus on one region - that between 1.5 X 10^8^ and 2.0 X 10^8^ base pairs on chromosome 1.  She genotypes the cases and controls for all of the snps in this region and then looks for associations.  When she does so, she gets the following results:
+
+```{r,echo=FALSE,message=FALSE,results='hide'}
+genurl <-"http://www.teachingpopgen.org/Data/cj1locus.gen"
+phenurl <-"http://www.teachingpopgen.org/Data/cj1locus.phen"
+dat.gwaa <-load.gwaa.data(genofile=genurl,phenofile=phenurl)
+
+an1 <-qtscore(dat.gwaa@phdata$phen,dat.gwaa,trait="binomial")
+plot(an1,main="Single Dominant Locus, Asian Population",df="Pc1df")
+```
+Although somewhat cryptically labelled, in fact, the y value on this plot is analogous to a lod score - it gives a measure of the likelihood that there is a contributing gene at a particular position relative to the likelihood that there is not. So it's pretty clear that there is a gene somewhere between  1.8 X 10^8^ ans 1.9 X 10^8^.  
+
+But remember that we have two goals.  First, we'd like to identify SNP variants that cosegregate with the disease-causing marker, so that we could use them in screening protocols.  Second, of course, we'd like to identify the gene.  We'll concentrate on the first objective, first, by identifying the fifteen SNPS that show the strongest association:
+```{r,echo=FALSE}
+an1.scan <-descriptives.scan(an1,top=15)
+dl <-which(rownames(an1.scan)==snp.nm)
+an1.scan[-dl,c(2,4,5,15)]
+```
+There is a chance that one of these SNPs is in fact the disease causing one, but if so, it would be lucky indeed to have found it. What we do have is a set of snps that demonstrate strong association for the phenotype.  So now the question becomes, can we find a set of them that we could use diagnostically to infer the presence of the disease locus?
 
 ## The Effect of Disease Allele Frequency
 
@@ -76,6 +103,6 @@ Our first case will involve a dominant disease-associated allele, one that incre
 
 ## Bibliography
 
-```{r}
+```{r,echo=FALSE,message=FALSE}
 write.bibtex(file="bibliography.bib")
 ```

@@ -1,0 +1,81 @@
+---
+title: <center>The Population Genetics of GWAS</center>
+author: <center>Bruce J. Cochrane</center>
+date: <center>`r format(Sys.Date(),format="%B %d %Y")`</center>
+bibliography: bibliography.bib
+output: 
+    html_document:
+       css: Chapter.css
+       toc: yes
+       toc_depth: 5
+---
+
+
+```{r,echo=FALSE,results='hide',message=FALSE}
+#install.packages("knitcitations")
+library(knitcitations)
+library(GenABEL)
+library(LDheatmap)
+source("./R/hgFunctions.R")
+cite_options(citation_format = "pandoc", style = "text",
+  hyperlink = FALSE, cite.style = "authoryear", super = FALSE,
+  max.names = 4)
+```
+
+
+## Introduction
+
+So what is a GWAS (Genome-wide Association Study) anyway?  In principle, it is really nothing more than a case-control study, a method with a rich history in epidemiology.  Let's think of a hypothetical example.  Suppose that, in a population, there is a group of individuals that suffer from some metabolic disorder, and as an investigator, you wish to determine its cause.  To do so, you identify individuals with the disorders ("cases") and a similar number without it ("controls"), and make a series of measurements on them.  For instance, in this case, you might compare diet, weight, or other variables you suspect might cause the disorder and look for statistically significant differences in the mean values you've determined for the case and control populations.
+
+In a GWAS, the comparison between case and control populations is not phenotypic, as in our hypothetical case, but rather genotypic.  The logic, on the surface, is rather simple:
+
+1.  Cases and controls are identified.
+2.  The genotypes of those individuals are determined at as many variable sites in the genome (usually Single Nucleotide Polymorphisms, or SNPs).
+3.  Statistical analysis  is used to identify variants that differ in frequency between the two populations.
+4.  Based on knowledge of the genome, it may be possible to identify candidate loci (genes) that are responsible for the trait or disorder being examined.
+
+Sounds simple, right?  Well, not really.  Consider the following questions:
+
+1.  Is the trait always the result of the same allele?
+2.  If it is, how strongly can we infer the presence of that allele based on its association with other linked markers?
+3.  If we can associate the disease allele with other markers in a particular population, can we then apply our results to other populations.  In other words, are the results of a GWAS performed in, for example, an Asian population, directly applicable to a Northern European one?
+4.  Most importantly, **is an observed association between a trait and a set of genetic markers truly causative?**  
+
+Many of these issues are covered in depth by `r citet("http://dx.doi.org/10.1016/j.ajhg.2011.11.029")`, and I strongly recommend that paper to the interested reader.  What follows here is just a brief overview, designed to introduce some of the issues in a more simple fashion.  We will focus on the first three questions, as those are the ones that lie largely within the realm of genetic inference.
+
+
+## Relevant Population Genetics Principles
+
+`r citet("10.1007/978-0-387-89554-3")`
+
+### Allele frequencies
+
+### Linkage Disequilibrium
+
+### Population Differentiation
+
+## HAPMAP - A Quick Overview
+
+`r citet("10.1038/nature09298")`
+
+## Some Examples
+
+In what follows, we're going to consider a very simple case - that of a disorder that is the result of a single dominant allele, and individuals that possess that allele (either as homozygotes or heterozygotes) have a 20-fold higher risk of having the disorder than do those with the alternative allele.  It is important to note that **going into the experiment, we do not know the identity of the allele**.  We also know, based on some earlier work, that this gene lies in a 5 million base-pair interval of chromosome 1 (between positions 15,000,000 and 20,000,000 on the genetic map).  What we want to do is to use our case-control approach to identify those haplotypes that are associated with that variant, so that we can design a protocol that could be used in pre- or postnatal screening (similar to what was done with the original work on Huntington's Disease).
+
+For what should be obvious reasons, the real raw GWAS data are not publicly available.  As an alternative, we will use simulated data, generated with the program hapgen2 (`r citet ("10.1093/bioinformatics/btr341")`).  What this program does is to generate simulated case-control populations, given the location(s) of one or more trait-associated SNPs, the phenotypic effect of a particular allele,  the distribution of haplotypes, and the recombination rates among SNPs, from an overall population from which the hypothetical cases and controls were sampled.  With these data, the program can use SNP allele frequencies and patterns of linkage disequilibrium in that population to realistically model what the case and control haplotypes would look like.
+
+### Case 1.  A low frequency allele in Asia
+
+Our first case will involve a dominant disease-associated allele, one that increases the risk of the disease by a factor of 20.
+
+## The Effect of Disease Allele Frequency
+
+## The Role of Population Differentiation
+
+## Conclusions
+
+## Bibliography
+
+```{r}
+write.bibtex(file="bibliography.bib")
+```

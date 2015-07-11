@@ -93,7 +93,25 @@ an1.scan <-descriptives.scan(an1,top=15)
 dl <-which(rownames(an1.scan)==snp.nm)
 an1.scan[-dl,c(2,4,5,15)]
 ```
-There is a chance that one of these SNPs is in fact the disease causing one, but if so, it would be lucky indeed to have found it. What we do have is a set of snps that demonstrate strong association for the phenotype.  So now the question becomes, can we find a set of them that we could use diagnostically to infer the presence of the disease locus?
+There is a chance that one of these SNPs is in fact the disease causing one, but if so, it would be lucky indeed to have found it. What we do have is a set of snps that demonstrate strong association for the phenotype.  So now we have to identify the specific haplotype associated with the disorder.  We'll do this in two steps.  First, we will display the bases that are segregating at each of the sites associated with the disease:
+
+```{r,echo=FALSE}
+hits <-descriptives.scan(an1,sort="Pc1df",top=20)
+hits <-hits[2:13,]
+snp.nms <-rownames(hits)
+all.snps <-dat.gwaa@gtdata@snpnames
+dsnp.pos <-which(all.snps%in%snp.nms==TRUE)
+dat.gwaa.dsnps <-dat.gwaa[,dsnp.pos]
+data.frame(bases = coding(dat.gwaa.dsnps))
+```
+And what is the disease associated haplotype?
+```{r,echo=FALSE}
+hap.asia <-effallele(dat.gwaa.dsnps)
+data.frame(base=hap.asia)
+```
+
+
+
 
 ## The Effect of Disease Allele Frequency
 

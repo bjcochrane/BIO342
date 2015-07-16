@@ -50,42 +50,143 @@ Many of these issues are covered in depth by `r citet("http://dx.doi.org/10.1016
 
 ### Allele frequencies
 
+The first thing we need to consdier in any analysis such as this is the frequency of alleles - both of the disease allele itself and of others linked to it.  For example, in the general european population, the incidence of a "disease" allele may be very low (<0.001), so that the probability of detecting it in a **random** sample of individuals is essentially zero.  And, since available data on SNPs in populations come from just such samples, the probability of there being an individual in SNP data sets like HapMap or 1000 genomes is also close to zero.  Therefore, going into our study, **it is most often the case that we do not know the identity of the actual disease associated SNP**.
+
+Conversely, those SNPS that are detected (and reported) in HapMap or 1000 genomes typically have two common alleles, referred to as a major allele (the more common one) and a minor allele. In fact, for statistical reasons, SNP loci with minor allele frequencies (MAF's) of less than 0.05 are often excluded from consideration.  Thus, what we are looking for are **associations between common variants of linked SNP loci and a particular rare (disease-associated) variant.  This leads us to a brief consideration of a second population genetic principle
+
 ### Linkage Disequilibrium
+
+Consider two SNP loci, each with two alleles that we'll designate 0 and 1.  For simplicity's sake, we'll assume that the frequencies of all alleles in the population under consideration is 0.5.  Now, consider an individual that is heterzygous at both loci; that is, s/he has a genotype of
+
+Locus A | Locus B
+---|---
+1/0 | 1/0
+
+But if we think not in terms of individual genes, but rather in terms of haplotypes, this individual could have one of two genotypes:
+
+<ul>1 1</ul>/<ul>0 0</ul>
+
+or
+
+<ul>1 0</ul>/<ul>0 1</ul>
+
+The first is sometimes referred to as "coupling" and the second as "repulsion".  But the key question  is this:  **in a population, what is the relationship between the frequencies of alleles at two loci and those of gametes that those loci are found in**?  We can address this problem by considering two extremes:
+
+####  *Equilibrium*  
+
+Let's first imagine two SNP loci on different chromosomes that are assorting independently.  In that case, Mendelian principles tell us that, for two loci, what allele a given gamete receives at one locus is completely independent of what it receives at another.  Extending this to the population level, we can consider the above situation, where
+
+f(A1) = .5
+f(A2) = .5
+
+and if they are independent, then
+
+f(<ul>A1 A2</ul>) = .5 X .5 = .25
+
+or
+
+f(A1A2) - f(A1)f(f2) = 0  (Equation 1)
+
+What this means, is that the haplotype frequencies are in fact
+
+Haplotype|Frequency
+---|---
+A1B1 | .25
+A1B2 |.25
+A2B1 | .25
+A2B2 | .25
+
+In this case, we say that the two loci are in **linkage equilibrium**
+
+#### Disequilibrium
+
+Now consider another hypothetical case.  We are looking at two similar alleles, only now we find that, in our population, the haplotypes are as follows:
+
+Haplotype | Frequency
+---|---
+A1B1 | .5
+A1B2 | 0
+A2B1 | 0
+A2B2 |.5
+
+Note that the *allele* frequencies are still the same - each has a frequency of 0.5.  Now, however, if we apply equation 1 above, we get
+
+f(A1B1) - f(A1)f(B1) = 0.5 - (0.5)(0.5) = 0.25
+
+What we see  *the observed haplotype frequency is different from that expected based on independent assortment of the two loci*.  in other words, there is a nonrandom **association** between alleles at these two loci.
+
+And therein lies the basis for GWAS analysis.  Remember, we are looking for a disease-associated allele, one that we cannot identify directly.  But what we might be able to do is to look for associations (based on linkage disequilibrium) between that unknown variant and polymorphic SNPs in the general population.  To do so, of course, we need a sample of genotypes from that general population, but more than that, *we need be able to organize those genotypes into haplotypes, in order that linkage disequilibrium  with the disease locus can be determined*.  It is for that region that the HapMap project was developed (see below)
 
 ### Population Differentiation
 
+So we have seen that in a single population, 
 ## HAPMAP - A Quick Overview
 
 `r citet("10.1038/nature09298")`
 
 ## Some Examples
 
-In what follows, we're going to consider a very simple case - that of a disorder that is the result of a single dominant allele, and individuals that possess that allele (either as homozygotes or heterozygotes) have a 20-fold higher risk of having the disorder than do those with the alternative allele.  It is important to note that **going into the experiment, we do not know the identity of the allele**.  We also know, based on some earlier work, that this gene lies in a 5 million base-pair interval of chromosome 1 (between positions 15,000,000 and 20,000,000 on the genetic map).  What we want to do is to use our case-control approach to identify those haplotypes that are associated with that variant, so that we can design a protocol that could be used in pre- or postnatal screening (similar to what was done with the original work on Huntington's Disease).
+In what follows, we're going to consider a very simple case - that of a disorder that is the result of a single  allele, D2, and that the risks of the disease are associated with the three genotypes of that locus as follows:
 
-For what should be obvious reasons, the real raw GWAS data are not publicly available.  As an alternative, we will use simulated data, generated with the program hapgen2 (`r citet ("10.1093/bioinformatics/btr341")`).  What this program does is to generate simulated case-control populations, given the location(s) of one or more trait-associated SNPs, the phenotypic effect of a particular allele,  the distribution of haplotypes, and the recombination rates among SNPs, from an overall population from which the hypothetical cases and controls were sampled.  With these data, the program can use SNP allele frequencies and patterns of linkage disequilibrium in that population to realistically model what the case and control haplotypes would look like.
+Disease | Risk Factor
+---|---
+D1/D1|1
+D1/D2|4
+D2/D2|16
 
-### Case 1.  A low frequency allele in Asia
+
+.  It is important to note that **going into the experiment, we do not know the identity of the allele or the gene**.  We also know, based on some earlier work, that this gene lies in a 25 million base-pair interval of chromosome 6 (between positions 25,000,000 and 50,000,000 on the genetic map).  What we want to do is to compare affected and unaffected individuals from a given population, and ask if there is evidence for linkage disequilibrium between alleles of the disease-associated locus and those of any of the polymorphic SNPs in this region characterized in HapMap
+
+For what should be obvious reasons, the real raw GWAS data are not publicly available.  As an alternative, we will use simulated data, generated with the program hapgen2 (`r citet ("10.1093/bioinformatics/btr341")`).  What this program does is to generate simulated case-control populations, given the location(s) of one or more trait-associated SNPs, the phenotypic effect of each genotype of those loci,  the distribution of haplotypes in the population from whence the cases and controls were obtained, and the recombination rates among SNPs.  With these data, the program can use SNP allele frequencies and patterns of linkage disequilibrium in that population to realistically model what the case and control haplotypes would look like.
+
+### Case 1.  An experiment in Europe
+
+So let's suppose that we are working with a Northern European population.  In HapMap, the CEU population, actually derived from residents of Utah with known European ancestors, can serve as our general population.  We've managed to genotype 1000 cases and 1000 controls, and now we want to look for associations.  The actual mathematics of this are complex and computationally intense, but we will focus on the (mostly) graphical results of such an analysis
 
 ```{r,echo=FALSE}
-snp.nm <-"rs7540216"
-snp.pos <-183441639
-a0 <-"C"
-a1 <-"T"
+snp.nm <-"rs3818954"
+snp.pos <-33051730
+a0 <-"A"
+a1 <-"G"
 ```
 
-Our first case will involve a dominant disease-associated allele, one that increases the risk of the disease by a factor of 20.  The causative snp happens to be the one designated `r snp.nm`, at position `r snp.pos`.  This is a `r paste(a0,a1,sep="/")`, with the frequency of the `r a1` allele in this population equal to .08.  Hapgen2 has been used to generate a population of 1000 controls and 1000 cases; we are going to use those simulated data to do an association scan over the region in question.
-
-So think of the simulated data as what would be available to an investigator who is actually looking for the disease-associated locus.  If all she knew nothing about the chromosomal location of the genome, then she would obviously have to search every chromosome for association.  However, to keep things more manageable, we're going to assume that, based on some prior information (perhaps a preliminary study involving a low-density SNP map), she has decided to focus on one region - that between 1.5 X 10^8^ and 2.0 X 10^8^ base pairs on chromosome 1.  She genotypes the cases and controls for all of the snps in this region and then looks for associations.  When she does so, she gets the following results:
+First, we can simply do an analysis of the raw data, and we see the following
 
 ```{r,echo=FALSE,message=FALSE,results='hide'}
-genurl <-"http://www.teachingpopgen.org/Data/cj1locus.gen"
-phenurl <-"http://www.teachingpopgen.org/Data/cj1locus.phen"
+#genurl <-"http://www.teachingpopgen.org/Data/cj1locus.gen"
+#phenurl <-"http://www.teachingpopgen.org/Data/cj1locus.phen"
+genurl <-"./scratch/hla.ceu.gen"
+phenurl <-"./scratch/hla.ceu.phen"
 dat.gwaa <-load.gwaa.data(genofile=genurl,phenofile=phenurl)
 
 an1 <-qtscore(dat.gwaa@phdata$phen,dat.gwaa,trait="binomial")
-plot(an1,main="Single Dominant Locus, Asian Population",df="Pc1df")
+#plot(an1,main="GWAS Results - Europe",df="Pc1df")
+dl.no  <- which(an1@annotation$Position==snp.pos)
+plot(an1@annotation$Position[-dl.no],-log10(an1@results$P1df[-dl.no]),col="darkblue",main="GWAS - Europe", ylab="-log(P)",xlab="Map Position")
+abline(v=snp.pos,col="red")
 ```
-Although somewhat cryptically labelled, in fact, the y value on this plot is analogous to a lod score - it gives a measure of the likelihood that there is a contributing gene at a particular position relative to the likelihood that there is not. So it's pretty clear that there is a gene somewhere between  1.8 X 10^8^ ans 1.9 X 10^8^.  
+In this plot, the X axis shows the map positions of the roughly 17,000 HapMap SNPS in the region; the Y axis shows (on a log<sub>10</sub> scale) the probability that there is an association between a gene in a region associated with the disease and the genotype SNPs in the region.  What we see is clear evidence for an association at about 3.3 X 10^7^ bp (indicated by the red line), however there are also a couple of possible peaks (although much smaller) at about 4.5-4.6 X 10^7^ bp.  Note that they are much smaller, so they either could indicate associations weak-effect loci, or they could be false positives.  Indeed, we might choose to simply ignore them, but in fact we can ask the computer to help us by
+
+1.  Excluding all SNPs with an MAF of less than 0.05
+2.  Excluding all SNPs that are not in Hardy-Weinberg equilibrium
+3.  Randomizing the selection of marker SNPs used and repeating the analysis to determine if the association remains.
+
+When we do so, we get the following
+```{r,echo=FALSE,results='hide',message=FALSE}
+qc1 <-check.marker(dat.gwaa,p.level=0.05)
+dat.gw.qc1 <-dat.gwaa[qc1$idok,qc1$snpok]
+#attach(phdata(dat.gw.qc1))
+set.seed(44556)
+an3 <-qtscore(dat.gw.qc1@phdata$phen,dat.gw.qc1,trait="binomial",times=200)
+plot(an3,main="Corrected Data - European")
+abline(v=snp.pos,col="red")
+```
+While there still remains some evidence for a second association, the corrected probability of there being one at the position indicated by the red line is over 100-fold greater, so we are probably safe in focusing on it.
+
+So what are the snps?  We can list the top 10 snps and their positions
+```{r}
+descriptives.scan(an3)
+```
 
 But remember that we have two goals.  First, we'd like to identify SNP variants that cosegregate with the disease-causing marker, so that we could use them in screening protocols.  Second, of course, we'd like to identify the gene.  We'll concentrate on the first objective, first, by identifying the fifteen SNPS that show the strongest association:
 ```{r,echo=FALSE}

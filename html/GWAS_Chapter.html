@@ -68,7 +68,7 @@ The Population Genetics of GWAS
 Bruce J. Cochrane
 </center></em></h4>
 <h4 class="date"><em><center>
-July 10 2015
+July 14 2015
 </center></em></h4>
 </div>
 
@@ -87,7 +87,6 @@ July 10 2015
 <li><a href="#the-effect-of-disease-allele-frequency">The Effect of Disease Allele Frequency</a></li>
 <li><a href="#the-role-of-population-differentiation">The Role of Population Differentiation</a></li>
 <li><a href="#conclusions">Conclusions</a></li>
-<li><a href="#bibliography">Bibliography</a></li>
 </ul>
 </div>
 
@@ -153,7 +152,35 @@ July 10 2015
 ## rs6672580  183555991  C  G 4.122551e-23
 ## rs2378950  183259050  G  T 1.136990e-14
 ## rs2144664  183279972  G  A 2.509073e-14</code></pre>
-<p>There is a chance that one of these SNPs is in fact the disease causing one, but if so, it would be lucky indeed to have found it. What we do have is a set of snps that demonstrate strong association for the phenotype. So now the question becomes, can we find a set of them that we could use diagnostically to infer the presence of the disease locus?</p>
+<p>There is a chance that one of these SNPs is in fact the disease causing one, but if so, it would be lucky indeed to have found it. What we do have is a set of snps that demonstrate strong association for the phenotype. So now we have to identify the specific haplotype associated with the disorder. We’ll do this in two steps. First, we will display the bases that are segregating at each of the sites associated with the disease:</p>
+<pre><code>## Summary for top 20 results, sorted by Pc1df</code></pre>
+<pre><code>##            bases
+## rs41377350    GT
+## rs6698620     AG
+## rs10494582    AG
+## rs16823862    TC
+## rs16823869    CT
+## rs16823875    AG
+## rs16823884    AG
+## rs3766716     GA
+## rs3766713     TC
+## rs3895195     CT
+## rs6687946     AG
+## rs6672580     CG</code></pre>
+<p>And what is the disease associated haplotype?</p>
+<pre><code>##            base
+## rs41377350    T
+## rs6698620     G
+## rs10494582    G
+## rs16823862    C
+## rs16823869    T
+## rs16823875    G
+## rs16823884    G
+## rs3766716     A
+## rs3766713     C
+## rs3895195     T
+## rs6687946     G
+## rs6672580     G</code></pre>
 </div>
 </div>
 <div id="the-effect-of-disease-allele-frequency" class="section level2">
@@ -164,14 +191,10 @@ July 10 2015
 </div>
 <div id="conclusions" class="section level2">
 <h2>Conclusions</h2>
-</div>
-<div id="bibliography" class="section level2">
-<h2>Bibliography</h2>
-<pre><code>## Writing 4 Bibtex entries ... OK
-## Results written to file 'bibliography.bib'</code></pre>
 <div class="references">
+<h2>Bibliography</h2>
 <p>Altshuler, David M., Richard A. Gibbs, Leena Peltonen, David M. Altshuler, Richard A. Gibbs, Leena Peltonen, Emmanouil Dermitzakis, et al. 2010. “Integrating Common and Rare Genetic Variation in Diverse Human Populations.” <em>Nature</em> 467 (7311). Nature Publishing Group: 52–58. doi:<a href="http://dx.doi.org/10.1038/nature09298">10.1038/nature09298</a>.</p>
-<p>Foulkes, Andrea S. 2009. <em>Applied Statistical Genetics with R</em>. Springer New York. doi:<a href="http://dx.doi.org/10.1007/978-0-387-89554-3">10.1007/978-0-387-89554-3</a>.</p>
+<p>Foulkes, Andrea S. 2009. <em>Applied Statistical Genetics with R</em>. Springer Science <span class="math">\(\mathplus\)</span> Business Media. doi:<a href="http://dx.doi.org/10.1007/978-0-387-89554-3">10.1007/978-0-387-89554-3</a>.</p>
 <p>Su, Z., J. Marchini, and P. Donnelly. 2011. “HAPGEN2: Simulation of Multiple Disease SNPs.” <em>Bioinformatics</em> 27 (16). Oxford University Press (OUP): 2304–5. doi:<a href="http://dx.doi.org/10.1093/bioinformatics/btr341">10.1093/bioinformatics/btr341</a>.</p>
 <p>Visscher, Peter<span></span>M., Matthew<span></span>A. Brown, Mark<span></span>I. McCarthy, and Jian Yang. 2012. “Five Years of GWAS Discovery.” <em>The American Journal of Human Genetics</em>. <a href="http://www.sciencedirect.com/science/article/pii/S0002929711005337" class="uri">http://www.sciencedirect.com/science/article/pii/S0002929711005337</a>. <a href="http://dx.doi.org/10.1016/j.ajhg.2011.11.029" class="uri">http://dx.doi.org/10.1016/j.ajhg.2011.11.029</a>.</p>
 </div>

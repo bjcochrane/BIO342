@@ -11,8 +11,8 @@ body  {
    font-size: 11pt;
    background-color: white;
    padding-top: 1em;
-   margin: auto;
-   max-width: 35em;
+   margin:auto;
+   max-width: 100%;
 }
 
 /* Set the paragraph margin and

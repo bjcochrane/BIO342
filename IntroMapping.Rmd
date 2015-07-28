@@ -1,0 +1,24 @@
+---
+title: <center>The Basics of Recombination Mapping</center>
+author: <center></center>
+date: <center>`r format(Sys.Date(),format="%B %d %Y")`</center>
+output: 
+    html_document:
+       css: Chapter.css
+       toc: yes
+       toc_depth: 5
+---
+
+Continuing on with our quest to relate genes to chromosomes, we now look more closely at how recombination frequencies allow us to order and map genes on chromosomes.  In this, we will primarily be concerned with recombination as it results from meiotic exchange, *not* as it results from assortment of chromosomes.
+
+Again, Dr. Noor provides us with a good introction to the basics.  As you watch, consider the following:
+
+1.  **Dr. Noor states early in the video that the maximum recombination frequency between any two genes or markers it 50%.  Why is that?**
+2.  **How are visible phenotypes (like red vs. white eyes used in genetic mapping?**
+3.  **Remind yourself of the importance of distinguishing between parental and recombinant gametes.**
+4.  **The video describes a cross between cinnabar males and vestigial winged males.  After you have watched the video,  diagram the crosses (Parental and test cross) that Dr. Noor describes.**
+5.  **The cross described is a test cross, in that a doubly heterozygous female is crossed to a homozygous recessive male.  Why is this particular cross so valuable in gene mapping experiments?**
+
+<iframe width="854" height="510" src="https://www.youtube.com/embed/66R6CeRsI2M" frameborder="0" allowfullscreen></iframe>
+
+<br><br>  Be sure you are comfortable with this material!! To test your knowledge, try problems xxx in chapter 5.  We will also do some sample problems in class.  Once you can handle them, you will be prepared to go on to mapping multiple genes.

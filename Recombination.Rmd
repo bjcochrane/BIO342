@@ -1,0 +1,30 @@
+---
+title: <center>Recombination and Mapping</center>
+author: <center>Bruce J Cochrane</center>
+date: <center>`r format(Sys.Date(),format="%B %d %Y")`</center>
+output: 
+    html_document:
+       css: Chapter.css
+       toc: yes
+       toc_depth: 5
+---
+
+
+At this point, we have established two principles:
+
+1.  Alleles of different genes assort independently (Mendel's second law)
+2.  Genes are on chromosomes.
+
+If we think about this for any length of time, however, these two will appear to be contradictory.  When we looked at meiosis, we treated *chromosomes* as the independent units, however Mendel proposed that *genes* are those units.  So how can they both be?  Well, a trivial answer might be that there is one gene on every chromosome (and indeed garden peas have seven pairs of chromosomes, exactly the number of genes analyzed by Mendel).  However, that is absurd - we now know that there are something like 18,000 genes in the *Drosophila* genome, which consists of only four pairs of chromosomes.  So that doesn't work.
+
+
+
+But the other feature of meiosis we haven't talked about is crossing over - the formation of chiasmata and exchange of homologous chromatids that occurs during pachytene.  Dr. Mohammed Noor addresses that in the following video.  As you watch it, think about (and be prepared to answer) the following questions:
+
+1.  **What are the two types of recombination discussed?**
+2.  **What is meant by "independence" at the chromosomal** level?    
+3.  **At minute 11-14, Dr. Noor walks through  Punnett squares for two genes in the hypothetical cases of either complete linkage or complete independence.  Consider a case in between those two - suppose crossing over in the mother occurs 10% of the time.  What would the expected frequency of an individual with the genotype A/a;B/B be?  What about A/A; B/B?** 
+
+<iframe width="854" height="510" src="https://www.youtube.com/embed/n-BqE6aMGw8" frameborder="0" allowfullscreen></iframe>
+
+<br><br>**Once you have are comfortable with this, you should move on to the Introduction to Recombination Mapping.**

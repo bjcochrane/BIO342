@@ -11,9 +11,17 @@ output:
 
 ### Mohammed Noor
 
+#### Basic Recombination
+
+<iframe width="854" height="510" src="https://www.youtube.com/embed/n-BqE6aMGw8?list=PL4n6Uk3aii8iottl_J2OWrn-8RVveZWri" frameborder="0" allowfullscreen></iframe>
+
+#### Mapping
+
+<iframe width="854" height="510" src="https://www.youtube.com/embed/66R6CeRsI2M?list=PL4n6Uk3aii8iottl_J2OWrn-8RVveZWri" frameborder="0" allowfullscreen></iframe>
+
 #### Mapping in Populations
 
-<iframe width="640" height="360" src="https://www.youtube.com/embed/DCmpMhFTBB8?feature=player_detailpage&start=3660" frameborder="0" allowfullscreen></iframe>
+<iframe width="480" height="320" src="https://www.youtube.com/embed/DCmpMhFTBB8?feature=player_detailpage&start=3660" frameborder="0" allowfullscreen></iframe>
 
 Note - a bunch of stuff on hot spots that may not be all that relevant, but otherwise a great introduction to GWAS - I can then follow with population comparisons
 
@@ -25,6 +33,6 @@ Short video from MIT
 
 <iframe width="640" height="390" src="https://www.youtube.com/embed/2pp17E4E-O8" frameborder="0" allowfullscreen></iframe>
 
-Longer video from Jennifer Doudna pretty much a powerpoint.
+Longer video from Jennifer Doudna (pretty much a powerpoint.)
 
 <iframe width="640" height="390" src="https://www.youtube.com/embed/2pp17E4E-O8" frameborder="0" allowfullscreen></iframe>

@@ -1,0 +1,30 @@
+---
+title: <center>Videos for Genetics</center>
+author: <center>Bruce Cochrane</center>
+date: <center>`r format(Sys.Date(),format="%B %d %Y")`</center>
+output: 
+    html_document:
+       css: Chapter.css
+       toc: yes
+       toc_depth: 5
+---
+
+### Mohammed Noor
+
+#### Mapping in Populations
+
+<iframe width="640" height="360" src="https://www.youtube.com/embed/DCmpMhFTBB8?feature=player_detailpage&start=3660" frameborder="0" allowfullscreen></iframe>
+
+Note - a bunch of stuff on hot spots that may not be all that relevant, but otherwise a great introduction to GWAS - I can then follow with population comparisons
+
+Excellent end, comparing cross and association mapping.
+
+### CRISPR-CAS9
+
+Short video from MIT
+
+<iframe width="640" height="390" src="https://www.youtube.com/embed/2pp17E4E-O8" frameborder="0" allowfullscreen></iframe>
+
+Longer video from Jennifer Doudna pretty much a powerpoint.
+
+<iframe width="640" height="390" src="https://www.youtube.com/embed/2pp17E4E-O8" frameborder="0" allowfullscreen></iframe>

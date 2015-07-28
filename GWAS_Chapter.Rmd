@@ -100,7 +100,7 @@ In this case, we say that the two loci are in **linkage equilibrium**
 
 #### Disequilibrium
 
-Now consider another hypothetical case.  We are looking at two similar alleles, only now we find that, in our population, the haplotypes are as follows:
+Now consider another hypothetical case.  We are looking at two similar alleles, only now we find that, in our population, the haplotype frequencies are as follows:
 
 Haplotype | Frequency
 ---|---
@@ -115,11 +115,21 @@ f(A1B1) - f(A1)f(B1) = 0.5 - (0.5)(0.5) = 0.25
 
 What we see  *the observed haplotype frequency is different from that expected based on independent assortment of the two loci*.  in other words, there is a nonrandom **association** between alleles at these two loci.
 
+This value is typically called "D", and depending on whether the coupling or repulsion gametes are more frequent than expected, it can also be positive or negative.  It is also dependent on allele frequencies - in rough terms *as the minor allele frequency for one or both loci gets small, the maximum value D can attain approaches zero*.  Both of these problems are addressed, at least to an extent, by using the statistic r^2^ as a measure of LD, which is defined as follows.
+
+r^2^ = (pr-qs
+
+
+
 And therein lies the basis for GWAS analysis.  Remember, we are looking for a disease-associated allele, one that we cannot identify directly.  But what we might be able to do is to look for associations (based on linkage disequilibrium) between that unknown variant and polymorphic SNPs in the general population.  To do so, of course, we need a sample of genotypes from that general population, but more than that, *we need be able to organize those genotypes into haplotypes, in order that linkage disequilibrium  with the disease locus can be determined*.  It is for that region that the HapMap project was developed (see below)
 
+#### The fate of linkage disequilibrium.
+
+In real life, actual values of disequilibrium will fall somewhere between these two extremes.  But for the purpose of illustration, let's continue with our second case and ask what would happen to it
 ### Population Differentiation
 
 So we have seen that in a single population, 
+
 ## HAPMAP - A Quick Overview
 
 `r citet("10.1038/nature09298")`
@@ -144,7 +154,7 @@ For what should be obvious reasons, the real raw GWAS data are not publicly avai
 So let's suppose that we are working with a Northern European population.  In HapMap, the CEU population, actually derived from residents of Utah with known European ancestors, can serve as our general population.  We've managed to genotype 1000 cases and 1000 controls, and now we want to look for associations.  The actual mathematics of this are complex and computationally intense, but we will focus on the (mostly) graphical results of such an analysis
 
 ```{r,echo=FALSE}
-snp.nm <-"rs3818954"
+snp.nm <-"rs3918154"
 snp.pos <-33051730
 a0 <-"A"
 a1 <-"G"
@@ -176,8 +186,8 @@ When we do so, we get the following
 qc1 <-check.marker(dat.gwaa,p.level=0.05)
 dat.gw.qc1 <-dat.gwaa[qc1$idok,qc1$snpok]
 #attach(phdata(dat.gw.qc1))
-set.seed(44556)
-an3 <-qtscore(dat.gw.qc1@phdata$phen,dat.gw.qc1,trait="binomial",times=200)
+set.seed(44573)
+an3 <-qtscore(dat.gw.qc1@phdata$phen,dat.gw.qc1,trait="binomial",times=100)
 plot(an3,main="Corrected Data - European")
 abline(v=snp.pos,col="red")
 ```
@@ -185,40 +195,77 @@ While there still remains some evidence for a second association, the corrected 
 
 So what are the snps?  We can list the top 10 snps and their positions
 ```{r}
-descriptives.scan(an3)
+an3.scan <-descriptives.scan(an3)
+hot.snps <-rownames(an3.scan)
 ```
 
-But remember that we have two goals.  First, we'd like to identify SNP variants that cosegregate with the disease-causing marker, so that we could use them in screening protocols.  Second, of course, we'd like to identify the gene.  We'll concentrate on the first objective, first, by identifying the fifteen SNPS that show the strongest association:
+But remember that we have two goals.  First, we'd like to identify SNP variants that cosegregate with the disease-causing marker, so that we could use them in screening protocols.  Second, of course, we'd like to identify the gene.  We'll concentrate on the first objective, first, by identifying the ten SNPS that show the strongest association:
 ```{r,echo=FALSE}
-an1.scan <-descriptives.scan(an1,top=15)
+an1.scan <-descriptives.scan(an3,top=10)
 dl <-which(rownames(an1.scan)==snp.nm)
 an1.scan[-dl,c(2,4,5,15)]
 ```
-There is a chance that one of these SNPs is in fact the disease causing one, but if so, it would be lucky indeed to have found it. What we do have is a set of snps that demonstrate strong association for the phenotype.  So now we have to identify the specific haplotype associated with the disorder.  We'll do this in two steps.  First, we will display the bases that are segregating at each of the sites associated with the disease:
+There is a chance that one of these SNPs is in fact the disease causing one, but if so, it would be lucky indeed to have found it. What we do have is a set of snps that demonstrate strong association for the phenotype.  Keep these in mind; we will return to them subsequently
 
-```{r,echo=FALSE}
-hits <-descriptives.scan(an1,sort="Pc1df",top=20)
-hits <-hits[2:13,]
-snp.nms <-rownames(hits)
-all.snps <-dat.gwaa@gtdata@snpnames
-dsnp.pos <-which(all.snps%in%snp.nms==TRUE)
-dat.gwaa.dsnps <-dat.gwaa[,dsnp.pos]
-data.frame(bases = coding(dat.gwaa.dsnps))
+### Case 2.  Same Disease, different population
+
+So, based on the results described above, our intrepid investigators now turn their attention to an African population.  They do the same study, only now the use the Yoruba (YRI) data as their general population sample.  Once again, there are 1000 genotyped cases and controls.  What do we see?
+
+```{r,echo=FALSE,results='hide'}
+dat.gwaa.y <-load.gwaa.data(genofile="./scratch/hla.yri.gen",phenofile="./scratch/hla.yri.phen")
+an4 <-qtscore(dat.gwaa.y@phdata$phen,dat.gwaa.y,trait="binomial",times=100)
+plot(an4,main="GWAS - Africa")
+#add.plot(an1,df="Pc1df",col="green")
+descriptives.scan(an4,sort="Pc1df",top=25)
+abline(v=snp.pos,col="red")
+
 ```
-And what is the disease associated haplotype?
-```{r,echo=FALSE}
-hap.asia <-effallele(dat.gwaa.dsnps)
-data.frame(base=hap.asia)
+So what gives?  There's still a signal at the position we've identified, but it hardly stands out.  And what do we get when we do our cleanup?
+
+```{r,echo=FALSE,results='hide',message=FALSE}
+qc2 <-check.marker(dat.gwaa.y,p.level=0.05)
+dat.gw.qc2 <-dat.gwaa.y[qc2$idok,qc2$snpok]
+#attach(phdata(dat.gw.qc1))
+set.seed(44573)
+an5 <-qtscore(dat.gw.qc2@phdata$phen,dat.gw.qc2,trait="binomial",times = 100)
+plot(an5,main="Corrected Data - African")
+abline(v=snp.pos,col="red")
+```
+And the picture we see is quite different!  Indeed, while there is one snp that shows a weak association, there is nothing that makes this region stand out.  In fact, the obvious conclusion from this experiment is that **there is no significant association between markers in the region and this disase**.
+
+## Explaining the Discrepency
+
+So, just to remind ourselves where we are:
+
+1.  We did a case-control GWAS with Europeans, and we obtained strong evidence for the existence of a gene that contributes to the disease.
+2.  We did a similar study in Africa, and no association was detected.
+
+So how do we explain this?  One way would be to conclude that the common-disease common-variant hypothesis doesn't hold, that is, that the genetic basis of the disease in Africa is different from what it is in Europe.  But there's another explanation, and one that bears exploration.  Remember - our whole analysis is predicated on the existence of linkage disequilibrium between our disease allele and SNP markers in the region surrounding it.  And linkage disequilibrium in a population is to a great extent a function of the history of that population.  So an alternative hypothesis might be that *the overall level of linkage disequilibrium in the region in question is higher in the European population than it is in the African one*.
+
+We can test this hypothesis fairly easily by returning to the hapmap data and visualizing linkage disequilibrium with a "heatmap":
+
+![HeatMap](https://dl.dropboxusercontent.com/u/9752688/BIO342/image/HeatMapHLA.png)
+
+In this figure, the chromosomal region we've been focusing on is shown from the left to the right, with the hashmarks indicating the positions of SNPs.  In the triangular figures, linkage disequilibrium between pairs of markers is shown graphically, going from weak (white) to strong (red).  What should be obvious is that, overall, LD in this region is higher in the European (CEU) sample than it is in the African one (YRI).  Thus, the failure to find any association between our putative disease SNP and markers in that population may be due to the overall lack of associations between markers in that region and population.
+
+But is the "disease allele" even present in the population?  The disease is; after all, we found a population of cases.  But to get at that question rigorously, we'd need to know what the disease allele actually is (not what SNPs it happens to be associated with).  It just so happens that, in this case, we can check that, since our original cases and controls were simulated ones, in which a particular snp was selected as the disease locus.  That snp happens to be `r snp.nm`, which is located at position `r snp.pos`. This is an A/G polymorphism, with G being the minor allele. By consulting  the HapMap database, we can determine that the MAF of this locus is 
+```{r,echo=FALSE,results='hide',eval=FALSE}
+#dscan <-descriptives.scan(an1,top=15)
+snps <-dat.gwaa@gtdata@snpnames[which(dat.gwaa@gtdata@map>33008000 & dat.gwaa@gtdata@map<33073000)]
+dl <-which(snps==snp.nm)
+snps <-snps[-dl]
+r2c <-r2fast(dat.gwaa,snps=snps)
+r2y <-r2fast(dat.gwaa.y,snps=snps)
+mp <-dat.gwaa@gtdata@map
+plot.new()
+pushViewport(viewport(x=0, width=0.5, just="left"))
+LDheatmap(r2c,mp,color=heat.colors(7),add.map=FALSE,title="European",newpage = FALSE,add.key = FALSE)
+upViewport()
+pushViewport(viewport(x=1,width=.5,just="right"))
+LDheatmap(r2y,mp,color=heat.colors(7),add.map=FALSE,title="African",newpage = FALSE)
+upViewport()
 ```
 
-
-
-
-## The Effect of Disease Allele Frequency
-
-## The Role of Population Differentiation
-
-## Conclusions
 
 ## Bibliography
 

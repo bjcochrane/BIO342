@@ -1,0 +1,37 @@
+---
+title: <center>Cracking the Code</center>
+author: <center></center>
+date: <center>`r format(Sys.Date(),format="%B %d %Y")`</center>
+output: 
+    html_document:
+       css: Chapter.css
+     
+---
+
+### Background
+
+Dr. Matthew Cobb, a British evolutionary biologist, has recently published a book (reference below) describing the history of the deciphering of the genetic code.  In the video clip below, he gives a nice overview of the story.  Note that the last five minutes of the talk do not really relate to this question, however you may nevertheless find the material interesting
+
+### Questions
+
+As you view the film, think about the following questions:
+</br>
+1.  **Dr. Cobb highlights sentences from each of Watson and Crick's 1953 paper.  Based on our discussion of the necessary properties of the genetic material, why did he do so?**  
+2.  **Why do the following individuals matter?  What did they get right and what did they get wrong?**  
+  Oswald Avery  
+  Francis Crick  
+  Erwin Shrodinger  
+  George Gamow
+  Marshall Nirenberg
+3.  **Focus on what follows from minute 19 minutes.**  
+  Why was 20 the magic number?  
+  In the simplest terms possible, describe the "Central Dogma." In what way is the term inaccurate?   
+4.  **Why were bacteria (as opposed to "higher" organisms) important?**
+
+<center>
+<iframe width="500" height="390" src="https://www.youtube.com/embed/MYxASuEqMlY" frameborder="0" allowfullscreen></iframe>
+</center>
+
+### Reference
+
+Cobb, Matthew, 2015.  *Life's Greatest Secret:  The Race to Crack the Genetic Code*.  Basic Books, 464 pp.  ISBN 978-0465062676

@@ -1,0 +1,27 @@
+---
+title: <center>Mapping Three Genes</center>
+author: <center></center>
+date: <center>`r format(Sys.Date(),format="%B %d %Y")`</center>
+output: 
+    html_document:
+       css: Chapter.css
+       toc: yes
+       toc_depth: 5
+---
+Now we get to the essence of recombination mapping - how we can order genes. In the video that follows, Dr. Noor starts with one approach for doing so.  This method works, but focus on what follows from the "Some tricks! slide at about 6:30.  This is what forms the basis of the method we will use in class to come to the same results.  The rules are
+
+1.  Identify the parental gametes (the most frequent)
+2.  Identify the double recombinants (the least frequent)
+3.  Pick a parental (either one will work) and then identify the double recombinant that differs at one gene only.  That is the gene that is in the middle.
+4.  If necessary, rewrite the original data, putting the genes in the proper order
+5.  Identify the recombination events that give rise to the remaining gametes and calculate the recombination frequencies (not forgetting to include the double recombinants in your calculations)
+
+
+<iframe width="854" height="510" src="https://www.youtube.com/embed/faLjxWV9b5I" frameborder="0" allowfullscreen></iframe>
+
+The *only* way to learn three point mapping is to do it yourself.  You should do problems xxx in Chapter 5; we will also work through some problems together in class.  
+You should also be able to do the following:
+
+1.  **Explain in your own words why map distances of ~40% can't be trusted**
+2.  **In such a case, would you expect the second method of mapping genes (based on identifying parentals and double recombinants) to work?  Why or why not?**
+

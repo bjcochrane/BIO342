@@ -1,0 +1,149 @@
+---
+title: <center>GWAS with cgmisc</center>
+author: <center>Bruce Cochrane</center>
+date: <center>`r format(Sys.Date(),format="%B %d %Y")`</center>
+output: 
+    html_document:
+       css: Chapter.css
+       toc: yes
+       toc_depth: 5
+---
+
+So wonder of wonders, we have a new streamlined package for GWAS performance, which includes a data set on dogs which could be great for class. link is 10.1093/bioinformatics/btv426
+```{r,eval=FALSE}
+
+library(devtools)
+install_github("cgmisc-team/cgmisc")
+
+```
+
+The package vignette has good stuff to use - includes
+
+a)  quality control
+b) stratification
+c) Plotting by Fst
+
+and probably more.
+
+```{r}
+library(cgmisc)
+```
+Now load the dog data
+```{r}
+data('cgmisc_data')
+```
+OK.  Ny looking at the structure, it's 207 dogs scored for 174,375 snps.  39 chromosomes, with number 39 being the X.  We'll exclude it from further work.  
+
+### Quality control
+
+There are two issues related to call rate - per marker or per individual.  We don't want to include individuals that have not had a reasonably complete set of markers scored; nor do we want to score markers that have not been scored in most of the individuals.  Similarly, we don't want to mess with nearly monomorphic individuals.  We will also screen for and eliminate closely related individuals (based on identity by state)
+```{r}
+# First do check
+qc1 <-check.marker(data=data,callrate=.95,perid.call = .95,ibs.threshold = .95, ibs.mrk=2000,ibs.exclude = "lower", p.level=10e-18,maf=1e-3)
+# now create new data set (gwaa object)
+data.qc1 <-data[qc1$idok,qc1$snpok]
+```
+So we've excluded two dogs (so N=205) and reduced the number of nsps to 128942.  These will be our data.
+
+### Looking for substructure
+
+So now we are going to do the following
+
+1.  Subset the data to get the autosomes only (chr 1-38)
+2.  Calculate a kinship matrix
+3.  Compute a distance matrix
+4.  Visualize it via PCA-like method
+```{r}
+autosomal <-which(data.qc1@gtdata@chromosome != 39)
+data.qc1.gkin <-ibs(data.qc1,snpsubset = autosomal,weight = 'freq')
+data.qc1.dist <-as.dist(0.5-data.qc1.gkin)
+data.qc1.mds <-cmdscale(data.qc1.dist)
+plot(data.qc1.mds,pch=19,cex=.5,las=1,xlab="Axis 1",ylab="Axis 2",cex.axis=.7,bty="n")
+
+```
+Now the argument here is that there are two clusters, one with tighter clustering (e. g. more relatedness) to the left and another, more variable one, to the right.  We can make this prettier as follows
+```{r}
+kclust <-kmeans(data.qc1.mds,centers=2)
+plot(data.qc1.mds,pch=19,cex=.5,las=1,xlab="Axis 1",ylab="Axis 2",cex.axis=.7,bty="n",col=kclust$cluster)
+```
+Note to self = roll the above into a single chunk and skip the previous plot.  We could also do the Fisher test, but we won't.
+
+### Fst
+
+So having established that indeed there is structuring, now we want to focus on one chromosome for now (chromosome 2) and look at Fst in a snpwise fashion:
+```{r}
+pop <-kclust$cluster
+data.gt.cs2 <-data.qc1[,data.qc1@gtdata@chromosome==2]
+fst <-compute.fstats(data.gt.cs2,pops = pop)
+plot.fstats(data.gt.cs2,fstats = fst,est.type = "naive")
+```
+We need to fool with that a bit, and we may not want to show it, but it's good to know.  But on to the fun stuff
+
+### GWAS
+
+OK, the data have simulated phenotypes.  We are going to use one of them, called ct (there are also bt, which is a binary trait, and response, another continuous one.)  
+
+```{r}
+h2h <-polygenic(formula = ct~sex,kinship.matrix = data.qc1.gkin,data.qc1,llfun = "polylik")
+mm <-mmscore(h2object = h2h,data = data.qc1,strata = pop)
+par(las=1,cex.axis=.7)
+plot(mm,cex=.9,pch=19,col=c("darkgrey","grey"))
+```
+OK.  So that shows a nice single peak, clearly on chromosome 2.  Take a short break here for bs and then move on.
+
+### Linkage
+
+So at this point, we really need to stress the point that what we are dealing with are snps, not genes, and we've detected a number that, corrected for kinship, are in ld with *something*.  So first, let's get the top marker:
+
+```{r}
+top.hit <-summary(mm,top=1)
+pos <-top.hit$Position
+pos
+snp.nm <-rownames(top.hit)
+```
+And we see that it is snp `r rownames(top.hit)`, at position `r top.hit$Position`, on chromosome `r top.hit$Chromosome`.  So we want to focus on that region, look at linkage disequilibrium, and then ultimately look for genes.  We will plot linkage disequilibrium between this marker and others within a 2 megabase region.
+
+```{r}
+ul <- pos+1000000
+ll <-pos-1000000
+plot.manhattan.LD(data = data.qc1,gwas.result = mm,chr = 2,index.snp=snp.nm,legend.pos = "topleft",region = c(ll,ul))
+```
+A bunch of warnings we'll need to suppress.  However, the open circle is the index.
+
+Now, perhaps we can go straight to the genome browser:
+
+```{r}
+open.region.ucsc(chr=2,coords=c(ll,ul),assembly = "canFam3")
+```
+Kind of ugly.  Instead, I think what we need to do is to go with the bed file that's part of the package.
+
+```{r}
+fpath <-system.file('extdata','canFam3.1.prot.bed',package = 'cgmisc')
+man.pl <-plot.manhattan.genes(data=data.qc1,gwas.result=mm,chr=2,region=c(ll,ul),index.snp = snp.nm,bed.path = fpath)
+```
+Real problem is legibility; would sure be nice if there were a way to just get the list of genes.  Try the following
+```{r}
+plot.genes(region = c(ll,ul),chr=2,bed.path=fpath)
+```
+OK.  We'll need to come back to this and think about it.  But two last things to try for now
+
+### Getting a box plot
+
+So what is the actual phenotypic effect associated with this polymorphism - that is, what are the distributions of genotypes within phenotypic class?  We can visualize that in a "boxplot"
+
+```{r}
+trait.name="ct"
+box <-boxplot.snp(data=data.qc1,marker=snp.nm,trait=trait.name,recode=F,font=2)
+```
+
+In these, the dark line indicates the mean phenotypic value, the blue boxes indicate the range of the 25% and 75% quartiles; the whiskers (I think) are 95%.  The main point is that, despite a significant effect, the locus is far from diagnostic.
+
+### GWAS on binomial trait.
+
+```{r}
+h2h <-polygenic(formula = bt~sex,kinship.matrix = data.qc1.gkin,data.qc1,llfun = "polylik",trait.type = "binomial")
+mm <-mmscore(h2object = h2h,data = data.qc1,strata = pop)
+par(las=1,cex.axis=.7)
+plot(mm,cex=.9,pch=19,col=c("darkgrey","grey"))
+```
+Need to work on this

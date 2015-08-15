@@ -1,0 +1,130 @@
+---
+title: <center>Pedigree Drawing</center>
+author: <center>Bruce Cochrane</center>
+date: <center>`r format(Sys.Date(),format="%B %d %Y")`</center>
+output: 
+    html_document:
+       css: Chapter.css
+       toc: yes
+       toc_depth: 5
+---
+
+ the package kinship2
+```{r}
+#install.packages("kinship2")
+```
+```{r}
+library(kinship2)
+```
+First, use data supplied to get format
+```{r}
+data(minnbreast)
+head(minnbreast)
+```
+
+So I wonder if we could create a dataframe via excel that just has the first four columns (actually five, including sex)
+
+Note that when R 3.2.2 is released, we should be able to read https and thus get to Dropbox directly.  For now, we'll stick with direct file loading.
+```{r}
+#dat.raw <-read.csv("https://dl.dropboxusercontent.com/u/9752688/QPopgen/Summer15Development/DATA/SimplePedigree.csv",stringsAsFactors=FALSE)
+dat.raw <-read.csv("./scratch/SimplePedigree.csv",stringsAsFactors=FALSE)
+head(dat.raw)
+```
+Now create a pedigree object
+```{r}
+dat.ped <-with(dat.raw,pedigree(id,fatherid,motherid,sex))
+plot(dat.ped)
+```
+That is super cool!!  We can use it in genetics next fall for all types of stuff.  And for just drawing a structure, all we need is three columns - motherid, fatherid and sex.  We're going to make a file for that
+```{r}
+dat.raw <-dat.raw[,c(1,3,4,6)]
+dat.raw
+```
+```{r}
+save(dat.raw,file="../Data2015/Pedigree")
+```
+### May 8
+
+OK.  now we want to add in affected status.  We'll just do it randomly for now
+```{r}
+aff <-rbinom(12,1,.5)
+aff
+```
+And we'll cbind that to the data
+```{r}
+dat.new <-cbind(dat.raw,aff)
+head(dat.new)
+```
+And now we should be able to generate the file
+```{r}
+ped.2 <-with(dat.new, pedigree(id,fatherid,motherid,sex,aff))
+plot(ped.2)
+```
+Well what do you know?  That actually works as an autosomal dominant!!  Of course, we didn't set.seed, so we'll never get it again . . . 
+
+
+Try it with names
+```{r}
+dat.me <-read.csv("./scratch/MyFamily.csv")
+dat.me
+```
+```{r}
+ped.me <-with(dat.me,pedigree(id,fatherid,motherid,sex,missid="0"))
+plot(ped.me)
+```
+### For class.
+
+So what we need to do is to develop csv files for the ususal suspects - dominant, recessive, x linked.  Also would like to have ones for ambiguous cases and, if we can figure it out, a lod score example.  And I wonder if using names is better than numbers.
+
+### Waardenberg
+
+```{r}
+dat.ws <-read.csv("./scratch/WS3.csv")
+head(dat.ws)
+```
+```{r}
+ped.ws <-with(dat.ws,pedigree(id,dadid=fatherid,momid=motherid,sex=sex,affected=aff,missid="0",))
+plot(ped.ws,cex=.8)
+```
+Now, I think we could add a relationship matrix - just out of curiosity
+```{r}
+rel <-data.frame(id1="4-14",id2="4-15",code=2)
+rel
+```
+OK.  This is going to be hokey (since it uses attach) but we'll see if it works.
+
+```{r}
+#attach(dat.ws)
+ped2.ws <-pedigree(id,dadid=fatherid,momid=motherid,sex=sex,affected=aff,missid="0",relation = rel)
+plot(ped2.ws,cex=.8)
+```
+OK.  It works. But we need to be better than this.  First, let's see if we can generate random names:
+
+```{r}
+install.packages("randomNames")
+```
+```{r}
+library(randomNames)
+test <-randomNames(20,which.names="first",gender=1,ethnicity=4)
+test
+```
+OK.  So we can get a list of males with gender=0 and females with gender =1.
+
+Now, we've done that for an autosomal dominant
+```{r}
+dat.ad <-read.csv("./scratch/AutoD.csv")
+dat.ad
+```
+Now the pedigree.
+```{r}
+ped.ad <-with(dat.ad,pedigree(id,dadid=fatherid,momid=motherid,sex=sex,affected=aff,missid="0"))
+plot(ped.ad,cex=.80)
+```
+So all in all, not all that bad.  One more for the road - sex-linked recessive.  And make them 
+
+```{r}
+dat.xr <-read.csv("./scratch/XRec.csv")
+ped.xr <-with(dat.xr,pedigree(id,dadid=fatherid,momid=motherid,sex=sex,affected=aff,missid="0"))
+plot(ped.xr,cex=.8)
+```
+

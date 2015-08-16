@@ -104,27 +104,41 @@ OK.  It works. But we need to be better than this.  First, let's see if we can g
 install.packages("randomNames")
 ```
 ```{r}
-library(randomNames)
-test <-randomNames(20,which.names="first",gender=1,ethnicity=4)
+#library(randomNames)
+test <-randomNames(40,which.names="first",gender=1,ethnicity=5
+)
 test
 ```
 OK.  So we can get a list of males with gender=0 and females with gender =1.
 
 Now, we've done that for an autosomal dominant
 ```{r}
-dat.ad <-read.csv("./scratch/AutoD.csv")
-dat.ad
+dat.rf <-read.csv("./scratch/RoyalFamily.csv")
+dat.rf
 ```
 Now the pedigree.
 ```{r}
-ped.ad <-with(dat.ad,pedigree(id,dadid=fatherid,momid=motherid,sex=sex,affected=aff,missid="0"))
-plot(ped.ad,cex=.80)
+ped.rf <-with(dat.rf,pedigree(id,dadid=fatherid,momid=motherid,sex=sex,affected=aff,missid="0"))
+plot(ped.rf,cex=.60)
 ```
 So all in all, not all that bad.  One more for the road - sex-linked recessive.  And make them 
 
 ```{r}
 dat.xr <-read.csv("./scratch/XRec.csv")
 ped.xr <-with(dat.xr,pedigree(id,dadid=fatherid,momid=motherid,sex=sex,affected=aff,missid="0"))
-plot(ped.xr,cex=.8)
+plot(ped.xr,cex=.6)
+```
+Just for future reference, we can extract data from the package with commmands like:
+```{r}
+nms.male.na <-randomNamesData$first_names_e3_g1
+```
+```{r}
+str(nms.male.na)
+```
+```{r}
+names(nms.male.na)[which(nms.male.na==max(nms.male.na))]
+```
+```{r}
+ls.str(randomNamesData)
 ```
 

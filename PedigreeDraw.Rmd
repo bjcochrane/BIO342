@@ -105,7 +105,7 @@ install.packages("randomNames")
 ```
 ```{r}
 #library(randomNames)
-test <-randomNames(40,which.names="first",gender=1,ethnicity=5
+test <-randomNames(40,which.names="first",gender=0,ethnicity=5
 )
 test
 ```
@@ -140,5 +140,23 @@ names(nms.male.na)[which(nms.male.na==max(nms.male.na))]
 ```
 ```{r}
 ls.str(randomNamesData)
+```
+Need to do an autosomal recessive with three generations and ask about two second cousins marrying.  Similar with x linked and throw in prenatal testing.
+
+But first, let's right a function
+
+```{r}
+library(kinship2)
+drawped <-function(nm){
+  file.nm <-paste("./scratch/",nm,".csv",sep="")
+  dat <-read.csv(file.nm)
+  ped <-with(dat,pedigree(id,dadid=fatherid,momid=motherid,sex=sex,affected=aff,missid="0"))
+plot(ped,cex=.80)
+dat
+}
+
+```
+```{r}
+drawped("Prob1")
 ```
 

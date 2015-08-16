@@ -1,0 +1,42 @@
+---
+title: <center>Some Pedigrees</center>
+author: <center>Bruce Cochrane</center>
+date: <center>`r format(Sys.Date(),format="%B %d %Y")`</center>
+output: 
+    html_document:
+       css: Chapter.css
+       toc: no
+       toc_depth: 5
+---
+
+```{r,echo=FALSE}
+# some housekeeping to attend to:
+library(kinship2)
+library(randomNames)
+drawped <-function(nm,cx=1){
+  file.nm <-paste("./scratch/",nm,".csv",sep="")
+  dat <-read.csv(file.nm)
+  ped <-with(dat,pedigree(id,dadid=fatherid,momid=motherid,sex=sex,affected=aff,missid="0"))
+plot(ped,cex=cx,keep.par=TRUE)
+}
+# note that all files are in path ./scratch
+```
+
+### Background
+
+### Waardenberg
+```{r}
+drawped("WS3",.8)
+```
+
+### British Royal Family
+
+```{r}
+drawped("Royal2",.6)
+```
+
+### Problem 1
+```{r}
+drawped("Prob1")
+```
+

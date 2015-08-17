@@ -40,3 +40,9 @@ drawped("Royal2",.6)
 drawped("Prob1")
 ```
 
+### Problem 2
+```{r}
+drawped("Prob2")
+```
+
+Note that these could be modified to get rid of consanguinity.

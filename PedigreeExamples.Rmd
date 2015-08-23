@@ -18,31 +18,52 @@ drawped <-function(nm,cx=1){
   dat <-read.csv(file.nm)
   ped <-with(dat,pedigree(id,dadid=fatherid,momid=motherid,sex=sex,affected=aff,missid="0"))
 plot(ped,cex=cx,keep.par=TRUE)
+# randomNames(40,which.names="first",gender=0,ethnicity=5)
 }
 # note that all files are in path ./scratch
 ```
 
 ### Background
 
-### Waardenberg
+So in what follows, we're going to look at a few pedigrees.  In each case, our job is to determine the *most likely* mode of inheritance - dominant or recessive; autosomal or X-linked.  Note that in many real cases, the amount of information available may be insufficient to come to a definitive conclusion
+
+### Waardenberg Syndrome
+
+The pedigree below is a real one, of a family in which Waardenberg's syndrome is common.  Look at it and ask the following:
+
+1.  What is the most likely mode of inheritance?
+2.  What evidence in the pedigree led you to your conclusion?
+
 ```{r}
 drawped("WS3",.8)
 ```
+Note that in this pedigree, standard notation for each individual is used.  Each person is specified by two numbers, the first specifying in which generation they occur (in this case 1 through 4) and the second one an arbitrary number from 1 through n, where n is the number of individuals in the family
 
 ### British Royal Family
 
+Now we look at another real case, that of hemophilia in  Queen Victoria and her descendants.  In looking at this one, consider the same two questions.  Furthermore, what might you speculate about Victoria herself, given that she had an affected child *but* there is no record of the disease's occurrence in the older royal pedigrees.
 ```{r}
 drawped("Royal2",.6)
 ```
 
+
 ### Problem 1
+
+Now we turn to some situations we might imagine could occur, and you as a genetic counselor might be called upon to provide feedback to prospective parents.  In this case, Alena and Tyler are first cousins who have married and are thinking about having children.  Once again, address the two questions we started with, only now what we also have to do is to answer the following questions from Alena and Tyler:
+
+1.  What is the probability that we will have an affected child?
+2.  Does the sex of the child matter in terms of that probability (note that it's drawn as a male, but in fact could be either a male or a female)?
+
 ```{r}
 drawped("Prob1")
 ```
 
 ### Problem 2
+
+This one is similar to problem 1, only there is no consanguinity involved.  You should look at it and think about it in the same way you did for problem 1.
+
 ```{r}
-drawped("Prob2")
+drawped("Prob2",.8)
 ```
 
-Note that these could be modified to get rid of consanguinity.
+Note that these could be modified to get rid of consanguinity. Now you have to do the same as you did in problem 1 with respect to Skylar and Kiana's decision-making about having children.

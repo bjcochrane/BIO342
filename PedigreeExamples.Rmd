@@ -67,3 +67,59 @@ drawped("Prob2",.8)
 ```
 
 Note that these could be modified to get rid of consanguinity. Now you have to do the same as you did in problem 1 with respect to Skylar and Kiana's decision-making about having children.
+
+### Problem 3
+
+Look at the following simple pedigree - what can you hypothesize about the mode of inheritance?
+
+```{r,echo=FALSE}
+dat.ip <-read.csv("./scratch/IncPenetrance.csv")
+dat.ip
+#plot pedigree 1
+dat.f1 <-dat.ip[1:5,]
+ped <-with(dat.f1,pedigree(id,dadid=fatherid,momid=motherid,sex=sex,affected=aff,missid="0"))
+plot(ped)
+```
+But on some further exploration, it turns out that Cameron and Bella had another son, William, who was unaffected.  When his side of the family is added, we see the following:
+```{r,echo=FALSE}
+drawped("IncPenetrance")
+```
+How does this affect your thinking?  On the left side of the pedigree, the rules for autosomal dominant appear to hold - occurring in both sexes, with every affected individual having an affected parent.  However, on the right side it breaks down - Jevon and Alicia are affected children of unaffected parents, suggesting an autosomal recessive.  Assuming only one gene is involved, how can we explain this?  There are a couple of possibilities:
+
+1.  If Cameron and Leah and Crystal are in fact heterozygous, then the pedigree from result from a recessive autosomal allele.  But if the condition is rare, the probability of that is negligible.
+2.  This could be an example of **incomplete penetrance**, such that the allele is an autosomal dominant, however for whatever reason the trait did not manifest itself in William.  If he were *at the genotypic level* heterozygous for such an allele, then the rules for such a trait would apply.
+
+
+### The Habsburgs
+
+We will build the pedigree with the function:
+
+```{r}
+drawped("Habsburg")
+```
+We can also determine the kinship matrix
+```{r}
+dat.hb <-read.csv("./scratch/Habsburg.csv")
+ped.hb <-with(dat.hb,pedigree(id,dadid=fatherid,momid=motherid,sex=sex,affected=aff,missid="0"))
+kin.hb <-kinship2::kinship(ped.hb)
+
+```
+OK, now the fun thing will be to extract the diagonal
+```{r}
+i <-c(1:nrow(kin.hb))
+data.frame(row.names(kin.hb),sapply(i,function(x) kin.hb[x,x])
+```
+```{r,eval=FALSE}
+source("http://bioconductor.org/biocLite.R")
+biocLite()
+biocLite("GeneticsPed")
+```
+```{r,eval=FALSE}
+library(GeneticsPed)
+
+ped2 <-Pedigree(dat.hb,ascendant=c("fatherid","motherid"),ascendantSex = c("M","F"))
+
+inbreeding(ped2,method = "tabular",sort=FALSE)
+```
+
+A waste of time - it just gives the diagonal of the kinship matrix, and a somewhat garbled one at that.

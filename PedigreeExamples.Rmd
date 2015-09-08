@@ -66,7 +66,7 @@ This one is similar to problem 1, only there is no consanguinity involved.  You 
 drawped("Prob2",.8)
 ```
 
-Note that these could be modified to get rid of consanguinity. Now you have to do the same as you did in problem 1 with respect to Skylar and Kiana's decision-making about having children.
+Now you have to do the same as you did in problem 1 with respect to Skylar and Kiana's decision-making about having children.
 
 ### Problem 3
 
@@ -107,7 +107,7 @@ kin.hb <-kinship2::kinship(ped.hb)
 OK, now the fun thing will be to extract the diagonal
 ```{r}
 i <-c(1:nrow(kin.hb))
-data.frame(row.names(kin.hb),sapply(i,function(x) kin.hb[x,x])
+data.frame(row.names(kin.hb),sapply(i,function(x) kin.hb[x,x]))
 ```
 ```{r,eval=FALSE}
 source("http://bioconductor.org/biocLite.R")

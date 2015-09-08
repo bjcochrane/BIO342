@@ -1,0 +1,71 @@
+---
+title: <center>A Couple of Pedigree Problems</center>
+author: <center></center>
+date: <center>`r format(Sys.Date(),format="%B %d %Y")`</center>
+output: 
+    html_document:
+       css: Chapter.css
+       toc: no
+       toc_depth: 5
+---
+
+```{r,echo=FALSE}
+# some housekeeping to attend to:
+library(kinship2)
+#library(randomNames)
+drawped <-function(nm,cx=1){
+  file.nm <-paste("./scratch/",nm,".csv",sep="")
+  dat <-read.csv(file.nm)
+  ped <-with(dat,pedigree(id,dadid=fatherid,momid=motherid,sex=sex,affected=aff,missid="0"))
+plot(ped,cex=cx,keep.par=TRUE)
+# randomNames(40,which.names="first",gender=0,ethnicity=5)
+}
+# note that all files are in path ./scratch
+```
+### Problem 1
+
+Imagine the following is presented to you, and  as a genetic counselor you are  called upon to provide feedback to prospective parents.  In this case, Alena and Tyler are first cousins who have married and are thinking about having children.  First, you need to address the following questions:
+
+1.  What is the most likely mode of inheritance?
+2.  What evidence in the pedigree led you to your conclusion?
+3.  How confident are you of your conclusions?  Are there alternative possibilities?
+
+Alena and Tyler then ask you the following questions.  How would you respond?
+
+1.  What is the probability that we will have an affected child?
+2.  Does the sex of the child matter in terms of that probability (note that it's drawn as a male, but in fact could be either a male or a female)?
+
+```{r,echo=FALSE}
+drawped("Prob1",cx=.7)
+```
+
+### Problem 2
+
+This one is similar to problem 1, only there is no consanguinity involved.  You should look at it and think about it in the same way you did for problem 1.
+
+```{r,echo=FALSE}
+drawped("Prob2",.8)
+```
+
+### Problem 3 (done in class)
+
+Look at the following simple pedigree - what can you hypothesize about the mode of inheritance?
+
+```{r,echo=FALSE,results='hide'}
+dat.ip <-read.csv("./scratch/IncPenetrance.csv")
+dat.ip
+#plot pedigree 1
+dat.f1 <-dat.ip[1:5,]
+ped <-with(dat.f1,pedigree(id,dadid=fatherid,momid=motherid,sex=sex,affected=aff,missid="0"))
+plot(ped)
+```
+
+But on some further exploration, it turns out that Cameron and Bella had another son, William, who was unaffected.  When his side of the family is added, we see the following:
+
+```{r,echo=FALSE}
+drawped("IncPenetrance")
+```
+How does this affect your thinking?  On the left side of the pedigree, the rules for autosomal dominant appear to hold - occurring in both sexes, with every affected individual having an affected parent.  However, on the right side it breaks down - Jevon and Alicia are affected children of unaffected parents, suggesting an autosomal recessive.  Assuming only one gene is involved, how can we explain this?  There are a couple of possibilities:
+
+1.  If Cameron and Leah and Crystal are in fact heterozygous, then the pedigree from result from a recessive autosomal allele.  But if the condition is rare, the probability of that is negligible.
+2.  This could be an example of **incomplete penetrance**, such that the allele is an autosomal dominant, however for whatever reason the trait did not manifest itself in William.  If he were *at the genotypic level* heterozygous for such an allele, then the rules for such a trait would apply.

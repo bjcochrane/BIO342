@@ -1,0 +1,29 @@
+---
+title: <center>Probability figures</center>
+author: <center></center>
+date: <center>`r format(Sys.Date(),format="%%B %%d %%Y")`</center>
+output: 
+    html_document:
+       css: Chapter.css
+       toc: yes
+       toc_depth: 5
+---
+
+Do a binomial curve 
+```{r}
+dat <-rbinom(2000,20,.5)
+colhist(dat,labs=c("Number Heads","Occurrence","2000 Flips of 20 Coins"))
+abline(v=mean(dat),lwd=3,col="darkred")
+abline(v=17,lwd=3,col="blue")
+```
+Now need to do chi-square plots.  Same logic - what if we do the experiment lots of times for a given degree of freedom and plot the one-tail:
+
+```{r}
+dat.cg <- rchisq(10000,2)
+q <-quantile(dat.cg,c(.95,.99))
+colhist(dat.cg,tail=1,labs=c("chi-square","Number","Distribution of Chi-Squared, 2 d.f,10,000 Trials"))
+abline(v=q,col=c("red","blue"))
+q
+```
+
+

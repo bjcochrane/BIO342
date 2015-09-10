@@ -123,3 +123,16 @@ inbreeding(ped2,method = "tabular",sort=FALSE)
 ```
 
 A waste of time - it just gives the diagonal of the kinship matrix, and a somewhat garbled one at that.
+
+### Exam question
+
+Taken from pierce test bank.
+
+```{r}
+randomNames(40,gender="Male",which.names="first")
+```
+
+```{r}
+drawped("ExamQuestion")
+```
+

@@ -1,0 +1,25 @@
+---
+title: <center>Chi square example</center>
+author: <center></center>
+date: <center>`r format(Sys.Date(),format="%%B %%d %%Y")`</center>
+output: 
+    html_document:
+       css: Chapter.css
+       toc: yes
+       toc_depth: 5
+---
+
+```{r}
+obs <-c(315,108,101,32)
+n  <- sum(obs)
+n1 <-n/16
+exp <-(c(9,3,3,1)*n1)
+obs; exp
+```
+```{r}
+diff <-obs-exp
+diff2 <-diff^2/exp
+diff2
+sum(diff2)
+```
+

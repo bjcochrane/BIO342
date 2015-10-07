@@ -1,0 +1,14 @@
+---
+title: "Hfr Plot"
+author: "Bruce Cochrane"
+date: "October 7, 2015"
+output: html_document
+---
+Plotting data from table 9.1
+
+```{r}
+tm <- seq(0,27,3)
+n <- c(0,0,6,15,24,33,42,43,43,43)
+plot(tm,n,type="b",pch=15,xlab="Time",ylab = "Colonies",col="darkred")
+```
+

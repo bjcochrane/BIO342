@@ -1,0 +1,16 @@
+---
+title: "LOD score"
+author: "Bruce Cochrane"
+date: "September 25, 2015"
+output: html_document
+---
+So based on pedigree in slides and testing r=.2:
+
+```{r}
+lik.lnk <-(.4^5*.1)
+lik.unk <-.25^6
+rat <-lik.lnk/lik.unk
+lod <-log10(lik.lnk/lik.unk)
+rat; lod
+```
+
